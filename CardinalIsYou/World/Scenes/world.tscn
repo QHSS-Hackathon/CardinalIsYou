@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://b5762mnl4bold"]
+
+[ext_resource type="Script" uid="uid://cuyhep7pi0gd5" path="res://World/Scripts/world.gd" id="1_fdxdb"]
+[ext_resource type="PackedScene" uid="uid://cx33eqa445nk2" path="res://TileMap/Scenes/tile_map.tscn" id="2_xvb7p"]
+[ext_resource type="PackedScene" uid="uid://l8qwm0jsx2xr" path="res://Nouns/Scenes/player.tscn" id="3_t7din"]
+[ext_resource type="PackedScene" uid="uid://bjda7nn7rhrsc" path="res://Nouns/Scenes/noun.tscn" id="4_fdxdb"]
+
+[node name="World" type="Node2D" groups=["WORLD"]]
+script = ExtResource("1_fdxdb")
+
+[node name="TileMap" parent="." groups=["TILEMAP"] instance=ExtResource("2_xvb7p")]
+
+[node name="player" parent="." instance=ExtResource("3_t7din")]
+position = Vector2(8, 8)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(144, 81)
+zoom = Vector2(5, 5)
+
+[node name="Noun" parent="." instance=ExtResource("4_fdxdb")]
+grid_pos = Vector2(3, 4)
+type = 2
+
+[node name="Noun2" parent="." instance=ExtResource("4_fdxdb")]
+grid_pos = Vector2(7, 1)
+type = 2
+
+[node name="Noun3" parent="." instance=ExtResource("4_fdxdb")]
+grid_pos = Vector2(5, 1)
+type = 3

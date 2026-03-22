@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2mp7b5dyi3lx"
-path="res://.godot/imported/uzu.jpg-ff97c26640b04dbe033461fbe4b5568a.ctex"
+uid="uid://ctsh477225ofg"
+path="res://.godot/imported/ampersands.jpg-b0c569faa83a08cda0dafa82aa2a02cb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Player/Assets/uzu.jpg"
-dest_files=["res://.godot/imported/uzu.jpg-ff97c26640b04dbe033461fbe4b5568a.ctex"]
+source_file="res://Nouns/Assets/ampersands.jpg"
+dest_files=["res://.godot/imported/ampersands.jpg-b0c569faa83a08cda0dafa82aa2a02cb.ctex"]
 
 [params]
 
