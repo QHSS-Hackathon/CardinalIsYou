@@ -13,6 +13,7 @@ enum TYPE {
 
 @export var grid_pos : Vector2
 @export var type : TYPE
+@export var blocked : bool = false
 var dir : Vector2
 var tween_playing : bool
 
@@ -31,12 +32,14 @@ func on_moved() -> void:
 	pass
 
 func move(new_pos: Vector2, pusher : Noun = null) -> void:
+	blocked = false
 	var direction: Vector2 = new_pos - grid_pos
 	
 	# make check for if target position is a stopping obstacle
 	var obstacles = Global.RULES["stop"].map(func(e : Noun):return e.grid_pos)
 	if obstacles.has(grid_pos + direction):
-		if pusher : pusher.move(pusher.grid_pos - direction)
+		blocked = true
+		play_blocked_animation(direction) 
 		return
 	
 	# make check for push
@@ -44,23 +47,48 @@ func move(new_pos: Vector2, pusher : Noun = null) -> void:
 	for p : Noun in push:
 		if p.grid_pos == grid_pos + direction:
 			p.move(p.grid_pos + direction, self)
+			if p.blocked: 
+				blocked = true
+				play_blocked_animation(direction) 
+				return
 	
 	# change grid positon data
 	occupied_tiles.remove_at(occupied_tiles.find(self.grid_pos))
 	grid_pos += direction
 	var target_position: Vector2 = (Vector2(grid_pos) + Vector2.ONE * 1/2) * tile_size
+	play_movement_animation(target_position)
 	
-	#tween_playing = true
+func play_movement_animation(target_position : Vector2) -> void:
 	var tween: Tween = create_tween()
-	tween.tween_property(self, "global_position", target_position, 0.2).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(self, "global_position", target_position, 0.15).set_ease(Tween.EASE_IN_OUT)
 	tween_playing = true
 	
 	await tween.finished
 	dir = Vector2.ZERO
 	
-	await get_tree().create_timer(.05).timeout
+	await get_tree().create_timer(.025).timeout
 	tween_playing = false
 	occupied_tiles.append(grid_pos)
+
+func play_blocked_animation(direction : Vector2) -> void:
+	grid_pos += direction
+	var target_position: Vector2 = (Vector2(grid_pos) + Vector2.ONE * 1/2) * tile_size
+	
+	# go towards target
+	var tween: Tween = create_tween()
+	tween.tween_property(self, "global_position", target_position, 0.2).set_ease(Tween.EASE_IN_OUT)
+	tween_playing = true
+	
+	# go back to original position cuz its blocked dumbahh
+	grid_pos -= direction
+	var tween2: Tween = create_tween()
+	target_position = (Vector2(grid_pos) + Vector2.ONE * 1/2) * tile_size
+	tween2.tween_property(self, "global_position", target_position, 0.2).set_ease(Tween.EASE_IN_OUT)
+	
+	await tween.finished
+	dir = Vector2.ZERO
+	tween_playing = false
+	pass
 
 func match_type() -> void:
 	match type:

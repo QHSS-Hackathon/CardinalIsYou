@@ -12,10 +12,11 @@ script = ExtResource("1_fdxdb")
 
 [node name="player" parent="." instance=ExtResource("3_t7din")]
 position = Vector2(8, 8)
+type = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(144, 81)
-zoom = Vector2(5, 5)
+zoom = Vector2(4, 4)
 
 [node name="Noun" parent="." instance=ExtResource("4_fdxdb")]
 grid_pos = Vector2(3, 4)
@@ -25,6 +26,22 @@ type = 2
 grid_pos = Vector2(7, 1)
 type = 2
 
+[node name="Noun6" parent="." instance=ExtResource("4_fdxdb")]
+grid_pos = Vector2(5, 6)
+type = 2
+
 [node name="Noun3" parent="." instance=ExtResource("4_fdxdb")]
 grid_pos = Vector2(5, 1)
+type = 3
+
+[node name="Noun4" parent="." instance=ExtResource("4_fdxdb")]
+grid_pos = Vector2(5, 2)
+type = 3
+
+[node name="Noun5" parent="." instance=ExtResource("4_fdxdb")]
+grid_pos = Vector2(5, 3)
+type = 3
+
+[node name="Noun7" parent="." instance=ExtResource("4_fdxdb")]
+grid_pos = Vector2(5, 4)
 type = 3
