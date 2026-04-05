@@ -1,6 +1,7 @@
 class_name Noun
 extends Node2D
 
+
 static var occupied_tiles = []
 
 enum TYPE {
@@ -10,6 +11,7 @@ enum TYPE {
 @onready var tilemap : TileWorld = get_tree().get_first_node_in_group("TILEMAP")
 @onready var tile_size = tilemap.floor.tile_set.tile_size.x
 @onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var world : World = get_tree().get_first_node_in_group("WORLD")
 
 @export var grid_pos : Vector2
 @export var type : TYPE
@@ -44,6 +46,7 @@ func move(new_pos: Vector2, pusher : Noun = null) -> void:
 	
 	# make check for push
 	var push = Global.RULES["push"]
+	push.append_array(Global.RULES["pushAlways"])
 	for p : Noun in push:
 		if p.grid_pos == grid_pos + direction:
 			p.move(p.grid_pos + direction, self)
@@ -57,6 +60,9 @@ func move(new_pos: Vector2, pusher : Noun = null) -> void:
 	grid_pos += direction
 	var target_position: Vector2 = (Vector2(grid_pos) + Vector2.ONE * 1/2) * tile_size
 	play_movement_animation(target_position)
+	
+	# emit signal if nountext
+	if self is NounText : Global.noun_text_moved.emit()
 	
 func play_movement_animation(target_position : Vector2) -> void:
 	var tween: Tween = create_tween()

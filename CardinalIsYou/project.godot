@@ -26,6 +26,9 @@ WORLD=""
 PLAYER=""
 WALL=""
 NOUN=""
+NOUNTEXT=""
+RULE=""
+OPERATOR=""
 
 [input]
 

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://lkl7rhkv4mw1"]
+
+[ext_resource type="Script" uid="uid://ddqu7wun17kvh" path="res://Nouns/Scripts/operator.gd" id="1_uvbgk"]
+[ext_resource type="Texture2D" uid="uid://b4beyyj7khpyr" path="res://Nouns/Assets/text.png" id="2_g3ukr"]
+
+[node name="Operator" type="Node2D" groups=["OPERATOR"]]
+script = ExtResource("1_uvbgk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_g3ukr")
+hframes = 4
+vframes = 4

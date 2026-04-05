@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://diudpd0btefxn"]
+
+[ext_resource type="Script" uid="uid://d0hdaqv2bic5h" path="res://Nouns/Scripts/noun_text.gd" id="1_btn1x"]
+[ext_resource type="Texture2D" uid="uid://b4beyyj7khpyr" path="res://Nouns/Assets/text.png" id="2_digv8"]
+
+[node name="NounText" type="Node2D" groups=["NOUNTEXT"]]
+script = ExtResource("1_btn1x")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_digv8")
+hframes = 4
+vframes = 4

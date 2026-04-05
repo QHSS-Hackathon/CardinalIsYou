@@ -1,0 +1,34 @@
+class_name NounText
+extends Noun
+
+var nounArray : Array
+
+func _ready() -> void:
+	super._ready()
+	match_nouns()
+	
+	
+
+func set_grid_position(newGridPos : Vector2) -> void:
+	grid_pos = newGridPos
+	global_position = tilemap.floor.map_to_local(grid_pos)
+	occupied_tiles.append(grid_pos)
+
+func match_nouns() -> void:
+	var nouns = get_tree().get_nodes_in_group("NOUN")
+	
+	# find all nouns corresponding to this type and filter out text nouns
+	nouns = nouns.filter(func(e : Noun):return e.type == type )
+	nouns = nouns.filter(func(e : Noun):return !(e is NounText))
+	
+	nounArray = nouns 
+	pass
+
+func match_type() -> void:
+	match type:
+		Noun.TYPE.CARDINAL:
+			sprite_2d.frame = 0
+		Noun.TYPE.WALL:
+			sprite_2d.frame = 3
+		Noun.TYPE.ROCK:
+			sprite_2d.frame = 4

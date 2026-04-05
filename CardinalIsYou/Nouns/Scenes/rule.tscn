@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://cc8agrmrfm212"]
+
+[ext_resource type="Script" uid="uid://ccg88dchxugm8" path="res://Nouns/Scripts/rule.gd" id="1_lcgww"]
+[ext_resource type="Texture2D" uid="uid://b4beyyj7khpyr" path="res://Nouns/Assets/text.png" id="2_m3q3p"]
+
+[node name="Rule" type="Node2D" groups=["RULE"]]
+script = ExtResource("1_lcgww")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_m3q3p")
+hframes = 4
+vframes = 4

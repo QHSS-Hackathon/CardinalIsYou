@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://b5762mnl4bold"]
+[gd_scene load_steps=8 format=3 uid="uid://b5762mnl4bold"]
 
 [ext_resource type="Script" uid="uid://cuyhep7pi0gd5" path="res://World/Scripts/world.gd" id="1_fdxdb"]
 [ext_resource type="PackedScene" uid="uid://cx33eqa445nk2" path="res://TileMap/Scenes/tile_map.tscn" id="2_xvb7p"]
 [ext_resource type="PackedScene" uid="uid://l8qwm0jsx2xr" path="res://Nouns/Scenes/player.tscn" id="3_t7din"]
 [ext_resource type="PackedScene" uid="uid://bjda7nn7rhrsc" path="res://Nouns/Scenes/noun.tscn" id="4_fdxdb"]
+[ext_resource type="PackedScene" uid="uid://diudpd0btefxn" path="res://Nouns/Scenes/noun_text.tscn" id="5_xvb7p"]
+[ext_resource type="PackedScene" uid="uid://lkl7rhkv4mw1" path="res://Nouns/Scenes/operator.tscn" id="6_7qq3u"]
+[ext_resource type="PackedScene" uid="uid://cc8agrmrfm212" path="res://Nouns/Scenes/rule.tscn" id="6_t7din"]
 
 [node name="World" type="Node2D" groups=["WORLD"]]
 script = ExtResource("1_fdxdb")
@@ -44,4 +47,46 @@ type = 3
 
 [node name="Noun7" parent="." instance=ExtResource("4_fdxdb")]
 grid_pos = Vector2(5, 4)
+type = 3
+
+[node name="YouProp" type="Node" parent="."]
+
+[node name="Rule" parent="YouProp" instance=ExtResource("6_t7din")]
+ruleType = 1
+grid_pos = Vector2(11, 3)
+
+[node name="Operator" parent="YouProp" instance=ExtResource("6_7qq3u")]
+operatorType = 1
+grid_pos = Vector2(10, 3)
+
+[node name="NounText" parent="YouProp" instance=ExtResource("5_xvb7p")]
+grid_pos = Vector2(9, 3)
+type = 1
+
+[node name="StopProp" type="Node" parent="."]
+
+[node name="Rule" parent="StopProp" instance=ExtResource("6_t7din")]
+ruleType = 3
+grid_pos = Vector2(11, 5)
+
+[node name="Operator" parent="StopProp" instance=ExtResource("6_7qq3u")]
+operatorType = 1
+grid_pos = Vector2(10, 5)
+
+[node name="NounText" parent="StopProp" instance=ExtResource("5_xvb7p")]
+grid_pos = Vector2(9, 5)
+type = 2
+
+[node name="PushProp" type="Node" parent="."]
+
+[node name="Rule" parent="PushProp" instance=ExtResource("6_t7din")]
+ruleType = 2
+grid_pos = Vector2(11, 8)
+
+[node name="Operator" parent="PushProp" instance=ExtResource("6_7qq3u")]
+operatorType = 1
+grid_pos = Vector2(10, 8)
+
+[node name="NounText" parent="PushProp" instance=ExtResource("5_xvb7p")]
+grid_pos = Vector2(9, 8)
 type = 3
