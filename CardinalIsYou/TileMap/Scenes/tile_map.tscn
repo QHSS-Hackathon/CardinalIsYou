@@ -10,7 +10,7 @@ texture = ExtResource("1_rp6ds")
 [sub_resource type="TileSet" id="TileSet_6n3p4"]
 sources/0 = SubResource("TileSetAtlasSource_arvki")
 
-[node name="TileMap" type="Node2D"]
+[node name="TileMap" type="Node2D" groups=["TILEMAP"]]
 script = ExtResource("1_arvki")
 
 [node name="floor" type="TileMapLayer" parent="."]

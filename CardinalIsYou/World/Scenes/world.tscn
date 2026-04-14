@@ -11,7 +11,7 @@
 [node name="World" type="Node2D" groups=["WORLD"]]
 script = ExtResource("1_fdxdb")
 
-[node name="TileMap" parent="." groups=["TILEMAP"] instance=ExtResource("2_xvb7p")]
+[node name="TileMap" parent="." instance=ExtResource("2_xvb7p")]
 
 [node name="player" parent="." instance=ExtResource("3_t7din")]
 position = Vector2(8, 8)

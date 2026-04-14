@@ -5,7 +5,7 @@ extends Node2D
 static var occupied_tiles = []
 
 enum TYPE {
-	NONE, CARDINAL, WALL, ROCK
+	NONE, CARDINAL, WALL, ROCK, FLAG
 }
 
 @onready var tilemap : TileWorld = get_tree().get_first_node_in_group("TILEMAP")
@@ -22,6 +22,7 @@ var tween_playing : bool
 func _ready() -> void:
 	set_grid_position(grid_pos)
 	match_type()
+	modulate = Color(0.735, 0.735, 0.735, 1.0)
 
 func set_grid_position(newGridPos : Vector2) -> void:
 	grid_pos = newGridPos
@@ -63,6 +64,7 @@ func move(new_pos: Vector2, pusher : Noun = null) -> void:
 	
 	# emit signal if nountext
 	if self is NounText : Global.noun_text_moved.emit()
+	if self is Rule : Global.noun_text_moved.emit()
 	
 func play_movement_animation(target_position : Vector2) -> void:
 	var tween: Tween = create_tween()
@@ -104,3 +106,7 @@ func match_type() -> void:
 		TYPE.ROCK:
 			sprite_2d.texture = load("res://Nouns/Assets/psyduck.png")
 			sprite_2d.scale = Vector2(.060,.060)
+		TYPE.FLAG:
+			sprite_2d.texture = load("res://Nouns/Assets/flag.png")
+			sprite_2d.scale = Vector2(1,1)
+			sprite_2d.modulate = Color(1.5,1.5,1.5)

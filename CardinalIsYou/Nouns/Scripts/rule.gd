@@ -2,7 +2,7 @@ class_name Rule
 extends Noun
 
 enum RULETYPE {
-	NONE, YOU, PUSH, STOP
+	NONE, YOU, PUSH, STOP, WIN
 }
 
 @export var ruleType : RULETYPE
@@ -16,5 +16,7 @@ func match_type() -> void:
 			sprite_2d.frame = 6
 		RULETYPE.STOP:
 			sprite_2d.frame = 5
+		RULETYPE.WIN:
+			sprite_2d.frame = 7
 	
 	string = RULETYPE.keys()[ruleType].to_lower()

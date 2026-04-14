@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://bjda7nn7rhrsc"]
+[gd_scene load_steps=3 format=3 uid="uid://bjda7nn7rhrsc"]
 
 [ext_resource type="Script" uid="uid://b7undv5q34tt3" path="res://Nouns/Scripts/noun.gd" id="1_eyjsf"]
+[ext_resource type="Texture2D" uid="uid://b7343q4tbupqt" path="res://Nouns/Assets/flag.png" id="2_johas"]
 
 [node name="Noun" type="Node2D" groups=["NOUN"]]
 script = ExtResource("1_eyjsf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_johas")

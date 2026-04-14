@@ -11,13 +11,17 @@ config_version=5
 [application]
 
 config/name="CardinalIsYou"
-run/main_scene="uid://b5762mnl4bold"
+run/main_scene="uid://bvib187q0nmu3"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Global="*res://World/Scripts/Global.gd"
+
+[display]
+
+window/stretch/mode="canvas_items"
 
 [global_group]
 
