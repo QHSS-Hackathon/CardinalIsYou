@@ -28,8 +28,8 @@ func apply_rules() -> void:
 		# unset rule
 		Global.RULES[prevRule.string] = []
 		# unlight
-		prevRule.modulate = Color(0.735, 0.735, 0.735, 1.0)
-		prevNounText.modulate = Color(0.735, 0.735, 0.735, 1.0)
+		if prevRule: prevRule.modulate = Color(0.735, 0.735, 0.735, 1.0)
+		if prevNounText: prevNounText.modulate = Color(0.735, 0.735, 0.735, 1.0)
 		self.modulate = Color(0.735, 0.735, 0.735, 1.0)
 		if prevRule.ruleType == Rule.RULETYPE.YOU:
 			set_controlled_noun_to_you()
@@ -50,7 +50,7 @@ func set_controlled_noun_to_you() -> void:
 	world.controlled_nouns = Global.RULES[rule.string]
 	print(Global.RULES[rule.string])
 	for n : Noun in world.controlled_nouns:
-		n.z_index = 10
+		n.top_level = true
 
 func find_noun() -> void:
 	nounText = null

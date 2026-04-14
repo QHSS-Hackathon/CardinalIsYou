@@ -26,7 +26,7 @@ func _ready() -> void:
 	default_grid_pos = grid_pos
 	set_grid_position(grid_pos)
 	match_type()
-	modulate = Color(0.735, 0.735, 0.735, 1.0)
+	modulate = Color(0.997, 0.997, 0.997, 1.0)
 
 func set_grid_position(newGridPos : Vector2) -> void:
 	grid_pos = newGridPos
@@ -52,6 +52,9 @@ func move(new_pos: Vector2, pusher : Noun = null) -> void:
 	# make check for push
 	var push = Global.RULES["push"]
 	push.append_array(Global.RULES["pushAlways"])
+	# put on top
+	z_index = 1 if push.has(self) else 0
+	# check if pushing / can move 
 	for p : Noun in push:
 		if p.grid_pos == grid_pos + direction:
 			p.move(p.grid_pos + direction, self)
