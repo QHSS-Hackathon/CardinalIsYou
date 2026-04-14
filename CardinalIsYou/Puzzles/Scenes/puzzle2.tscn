@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=4 uid="uid://dg7r1kg6uprno"]
+
+[ext_resource type="Script" uid="uid://xve1dkbj0f2w" path="res://Puzzles/Scripts/puzzle.gd" id="1_q5h65"]
+[ext_resource type="PackedScene" uid="uid://cx33eqa445nk2" path="res://TileMap/Scenes/tile_map.tscn" id="2_r28x6"]
+[ext_resource type="TileSet" uid="uid://mpimig2gj4n4" path="res://Puzzles/layoutTileSet.tres" id="3_8nysp"]
+
+[node name="Puzzle" type="Node2D"]
+script = ExtResource("1_q5h65")
+metadata/_custom_type_script = "uid://xve1dkbj0f2w"
+
+[node name="TileMap" parent="." instance=ExtResource("2_r28x6")]
+
+[node name="layout" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAALAAIAAAAAAAMAAAAMAAIAAAAAAAMAAAANAAIAAAAAAAMAAAAOAAIAAAAAAAMAAAAPAAIAAAAAAAMAAAAPAAMAAAAAAAMAAAAPAAQAAAAAAAMAAAAPAAUAAAAAAAMAAAAPAAYAAAAAAAMAAAALAAYAAAAAAAMAAAAMAAYAAAAAAAMAAAANAAYAAAAAAAMAAAAOAAYAAAAAAAMAAAALAAMAAAAAAAMAAAALAAQAAAAAAAMAAAALAAUAAAAAAAMAAAANAAQAAAADAAIAAAAEAAIAAAACAAIAAAAFAAIAAAACAAIAAAAGAAIAAAACAAIAAAADAAIAAAACAAIAAAADAAMAAAACAAIAAAADAAQAAAACAAIAAAADAAUAAAACAAIAAAADAAYAAAACAAIAAAAHAAIAAAACAAIAAAAHAAMAAAACAAIAAAAHAAYAAAACAAIAAAAGAAYAAAACAAIAAAAFAAYAAAACAAIAAAAEAAYAAAACAAIAAAAFAAQAAAAAAAIAAAAFAAgAAAABAAIAAAAMAAkAAAABAAIAAAAIAAgAAAABAAIAAAAJAAEAAAABAAIAAAAHAAkAAAABAAIAAAA=")
+tile_set = ExtResource("3_8nysp")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(144, 81)
+zoom = Vector2(4, 4)

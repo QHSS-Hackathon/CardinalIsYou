@@ -5,7 +5,7 @@ extends Node2D
 static var occupied_tiles = []
 
 enum TYPE {
-	NONE, CARDINAL, WALL, ROCK, FLAG
+	NONE, CARDINAL, WALL, ROCK, FLAG, BOMB
 }
 
 @onready var tilemap : TileWorld = get_tree().get_first_node_in_group("TILEMAP")
@@ -14,12 +14,16 @@ enum TYPE {
 @onready var world : World = get_tree().get_first_node_in_group("WORLD")
 
 @export var grid_pos : Vector2
+@export var part_of_layout : bool = false
 @export var type : TYPE
 @export var blocked : bool = false
+
 var dir : Vector2
 var tween_playing : bool
+var default_grid_pos : Vector2
 
 func _ready() -> void:
+	default_grid_pos = grid_pos
 	set_grid_position(grid_pos)
 	match_type()
 	modulate = Color(0.735, 0.735, 0.735, 1.0)
@@ -100,6 +104,9 @@ func play_blocked_animation(direction : Vector2) -> void:
 
 func match_type() -> void:
 	match type:
+		TYPE.CARDINAL:
+			sprite_2d.texture = load("res://Nouns/Assets/uzu.jpg")
+			sprite_2d.scale = Vector2(0.02,0.02)
 		TYPE.WALL:
 			sprite_2d.texture = load("res://Nouns/Assets/ampersands.jpg")
 			sprite_2d.scale = Vector2(0.018,0.018)
@@ -110,3 +117,6 @@ func match_type() -> void:
 			sprite_2d.texture = load("res://Nouns/Assets/flag.png")
 			sprite_2d.scale = Vector2(1,1)
 			sprite_2d.modulate = Color(1.5,1.5,1.5)
+		TYPE.BOMB:
+			sprite_2d.texture =load("res://Nouns/Assets/bomb.png")
+			sprite_2d.scale = Vector2(1,1)

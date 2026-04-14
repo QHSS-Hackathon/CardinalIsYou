@@ -34,3 +34,5 @@ func match_type() -> void:
 			sprite_2d.frame = 4
 		Noun.TYPE.FLAG:
 			sprite_2d.frame = 8
+		Noun.TYPE.BOMB:
+			sprite_2d.frame = 10
