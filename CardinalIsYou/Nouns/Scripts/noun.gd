@@ -20,10 +20,14 @@ enum TYPE {
 
 var dir : Vector2
 var tween_playing : bool
+
 var default_grid_pos : Vector2
+var default_type : Noun.TYPE
+
 
 func _ready() -> void:
 	default_grid_pos = grid_pos
+	default_type = type
 	set_grid_position(grid_pos)
 	match_type()
 	modulate = Color(0.997, 0.997, 0.997, 1.0)

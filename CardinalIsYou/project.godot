@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="CardinalIsYou"
-run/main_scene="uid://bvib187q0nmu3"
+run/main_scene="uid://dg7r1kg6uprno"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 

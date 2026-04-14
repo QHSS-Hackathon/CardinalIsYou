@@ -46,6 +46,7 @@ func load_default() -> void:
 	nouns.append_array(get_tree().get_nodes_in_group("OPERATOR"))
 	for n : Noun in nouns:
 		n.grid_pos = n.default_grid_pos
+		n.type = n.default_type
 		n._ready()
 	
 	layout.hide()

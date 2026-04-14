@@ -8,11 +8,12 @@ enum OPTYPE {
 @export var operatorType : OPTYPE
 
 var nounText : NounText # noun that is receiving property
+var secNounText : NounText # noun that receiving noun turns into
 var rule : Rule # rule that is being applied to noun
 
 var prevRule : Rule
 var prevNounText : NounText
-
+var prevSecNounText : NounText
 func _ready() -> void:
 	super._ready()
 	
@@ -24,28 +25,42 @@ func apply_rules() -> void:
 	find_noun()
 	find_rule()
 	
-	if !rule or !nounText:
+	if (!rule and !secNounText) or !nounText:
+		if !prevRule : return
 		# unset rule
 		Global.RULES[prevRule.string] = []
 		# unlight
-		if prevRule: prevRule.modulate = Color(0.735, 0.735, 0.735, 1.0)
+		prevRule.modulate = Color(0.735, 0.735, 0.735, 1.0)
 		if prevNounText: prevNounText.modulate = Color(0.735, 0.735, 0.735, 1.0)
 		self.modulate = Color(0.735, 0.735, 0.735, 1.0)
 		if prevRule.ruleType == Rule.RULETYPE.YOU:
 			set_controlled_noun_to_you()
 		return # if proposition incomplete, stop
 		
-	# proposition is valid
-	nounText.match_nouns()
-	Global.RULES[rule.string] = nounText.nounArray
 	# light up since valid
-	rule.modulate = Color(1.5,1.5,1.5, 1.0)
 	nounText.modulate = Color(1.5,1.5,1.5, 1.0)
 	self.modulate = Color(1.5,1.5,1.5, 1.0)
 	
-	# if rule is 'you', allow player to control noun
-	if rule.ruleType == Rule.RULETYPE.YOU:
-		set_controlled_noun_to_you()
+	# proposition is valid
+	nounText.match_nouns()
+	if rule:
+		# set rule for every noun
+		Global.RULES[rule.string] = nounText.nounArray
+		rule.modulate = Color(1.5,1.5,1.5, 1.0)
+		# if rule is 'you', allow player to control noun
+		if rule.ruleType == Rule.RULETYPE.YOU:
+			set_controlled_noun_to_you()
+	elif secNounText:
+		# make every noun on left the as the same noun on the right
+		secNounText.modulate = Color(1.5,1.5,1.5, 1.0)
+		var nouns = get_tree().get_nodes_in_group("NOUN")
+		for n : Noun in nouns:
+			if n.type != nounText.type: continue
+			n.type = secNounText.type
+			n.match_type()
+			secNounText.match_nouns()
+		pass
+	
 func set_controlled_noun_to_you() -> void:
 	world.controlled_nouns = Global.RULES[rule.string]
 	print(Global.RULES[rule.string])
@@ -68,13 +83,19 @@ func find_rule() -> void:
 	var botPos = grid_pos + Vector2(0,1)
 	var rightPos = grid_pos + Vector2(1,0)
 	
-	var ruleTexts = get_tree().get_nodes_in_group("RULE")
-	for rt : Rule in ruleTexts:
-		if rt.grid_pos == botPos or rt.grid_pos == rightPos:
-			rule = rt
-			prevRule = rule
+	var texts = get_tree().get_nodes_in_group("RULE")
+	texts.append_array(get_tree().get_nodes_in_group("NOUNTEXT"))
+	# check for both nountexts and ruletexts
+	for t : Noun in texts:
+		if t.grid_pos == botPos or t.grid_pos == rightPos:
+			if t is Rule:
+				rule = t
+				prevRule = rule
+			elif t is NounText:
+				secNounText = t
+				prevSecNounText = secNounText
 			
-	pass
+		
 
 func match_type() -> void:
 	match operatorType:
