@@ -10,6 +10,10 @@ var controlled_nouns : Array
 
 func _ready() -> void:
 	set_default_rules()
+	
+	for k in Rule.RULETYPE:
+		var key = k.to_lower()
+		Global.RULES[key] = []
 
 func set_default_rules() -> void:
 	var nouns = get_tree().get_nodes_in_group("NOUN")
@@ -20,8 +24,8 @@ func set_default_rules() -> void:
 	#Global.RULES["you"] = get_tree().get_first_node_in_group("PLAYER")wd
 	#controlled_nouns = Global.RULES["you"]
 	
-	Global.RULES["stop"] = nouns.filter(func(n:Noun):return n.type == Noun.TYPE.WALL)
-	Global.RULES["push"] = nouns.filter(func(n:Noun):return n.type == Noun.TYPE.ROCK)
+	#Global.RULES["stop"] = nouns.filter(func(n:Noun):return n.type == Noun.TYPE.WALL)
+	#Global.RULES["push"] = nouns.filter(func(n:Noun):return n.type == Noun.TYPE.ROCK)
 	Global.RULES["pushAlways"] = nounsText
 	Global.RULES["pushAlways"].append_array(rules)
 	Global.RULES["pushAlways"].append_array(operators)

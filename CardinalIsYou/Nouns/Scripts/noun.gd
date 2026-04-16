@@ -5,7 +5,7 @@ extends Node2D
 static var occupied_tiles = []
 
 enum TYPE {
-	NONE, CARDINAL, WALL, ROCK, FLAG, BOMB
+	NONE, CARDINAL, WALL, ROCK, FLAG, BOMB, KEY
 }
 
 @onready var tilemap : TileWorld = get_tree().get_first_node_in_group("TILEMAP")
@@ -31,6 +31,7 @@ func _ready() -> void:
 	set_grid_position(grid_pos)
 	match_type()
 	modulate = Color(0.997, 0.997, 0.997, 1.0)
+	
 
 func set_grid_position(newGridPos : Vector2) -> void:
 	grid_pos = newGridPos
@@ -47,15 +48,36 @@ func move(new_pos: Vector2, pusher : Noun = null) -> void:
 	var direction: Vector2 = new_pos - grid_pos
 	
 	# make check for if target position is a stopping obstacle
-	var obstacles = Global.RULES["stop"].map(func(e : Noun):return e.grid_pos)
-	if obstacles.has(grid_pos + direction):
-		blocked = true
-		play_blocked_animation(direction) 
-		return
+	if check_blocked(direction): return
 	
 	# make check for push
-	var push = Global.RULES["push"]
-	push.append_array(Global.RULES["pushAlways"])
+	if check_push_is_blocked(direction) : return
+	
+	
+	# change grid positon data
+	occupied_tiles.remove_at(occupied_tiles.find(self.grid_pos))
+	grid_pos += direction
+	var target_position: Vector2 = (Vector2(grid_pos) + Vector2.ONE * 1/2) * tile_size
+	play_movement_animation(target_position)
+	await get_tree().create_timer(3).timeout
+	remove_self()
+	
+	# check lose
+	if check_lose() :
+		world.load_default()
+		return
+	# check open
+	if check_open() : queue_free()
+	
+	# emit signal if nountext
+	if self is NounText : Global.noun_text_moved.emit()
+	if self is Rule : Global.noun_text_moved.emit()
+	if Global.RULES['open'].has(self) or Global.RULES['shut'].has(self):
+		Global.open_or_shut_moved.emit()
+
+func check_push_is_blocked(direction : Vector2) -> bool:
+	var push = Global.RULES["pushAlways"]
+	if Global.RULES.has("push") : push.append_array(Global.RULES["push"])
 	# put on top
 	z_index = 1 if push.has(self) else 0
 	# check if pushing / can move 
@@ -65,18 +87,35 @@ func move(new_pos: Vector2, pusher : Noun = null) -> void:
 			if p.blocked: 
 				blocked = true
 				play_blocked_animation(direction) 
-				return
+				return true
+	return false
+
+func check_blocked(direction : Vector2) -> bool:
+	var obstacles = Global.RULES["stop"].map(func(e : Noun):return e.grid_pos)
+	if obstacles.has(grid_pos + direction):
+		blocked = true
+		play_blocked_animation(direction) 
+		return true
+	return false
+
+func check_lose() -> bool:
+	if !world.controlled_nouns.has(self): return false
+	var obstacles = Global.RULES["lose"].map(func(e : Noun):return e.grid_pos)
+	if obstacles.has(grid_pos):
+		return true
+	return false
+
+func check_open() -> bool:
+	if !Global.RULES['open'].has(self) : return false
+	var nouns = get_tree().get_nodes_in_group("NOUN")
+	var shut = nouns.filter(func(e:Noun): return Global.RULES['shut'].has(e))
 	
-	# change grid positon data
-	occupied_tiles.remove_at(occupied_tiles.find(self.grid_pos))
-	grid_pos += direction
-	var target_position: Vector2 = (Vector2(grid_pos) + Vector2.ONE * 1/2) * tile_size
-	play_movement_animation(target_position)
-	
-	# emit signal if nountext
-	if self is NounText : Global.noun_text_moved.emit()
-	if self is Rule : Global.noun_text_moved.emit()
-	
+	for n : Noun in shut:
+		if n.grid_pos == grid_pos:
+			n.queue_free()
+			return true
+	return false
+
 func play_movement_animation(target_position : Vector2) -> void:
 	var tween: Tween = create_tween()
 	tween.tween_property(self, "global_position", target_position, 0.15).set_ease(Tween.EASE_IN_OUT)
@@ -127,3 +166,11 @@ func match_type() -> void:
 		TYPE.BOMB:
 			sprite_2d.texture =load("res://Nouns/Assets/bomb.png")
 			sprite_2d.scale = Vector2(1,1)
+		TYPE.KEY:
+			sprite_2d.texture =load("res://Nouns/Assets/key.png")
+			sprite_2d.scale = Vector2(1,1)
+
+func remove_self() -> void:
+	if world.controlled_nouns.has(self):
+		world.controlled_nouns.remove_at(world.controlled_nouns.find(self))
+	queue_free()

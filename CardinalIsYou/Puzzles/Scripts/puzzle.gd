@@ -5,25 +5,7 @@ extends World
 @onready var player : Player = get_tree().get_first_node_in_group("PLAYER")
 
 func _ready() -> void:
-	var walls = layout.get_used_cells_by_id(0,Vector2i(2,2))
-	for w in walls:
-		create_noun(Noun.TYPE.WALL,w)
-	
-	var rocks = layout.get_used_cells_by_id(0,Vector2i(1,2))
-	for r in rocks:
-		create_noun(Noun.TYPE.ROCK,r)
-		
-	var player = layout.get_used_cells_by_id(0,Vector2i(0,2))
-	for p in player:
-		create_noun(Noun.TYPE.CARDINAL,p)
-	
-	var flags = layout.get_used_cells_by_id(0,Vector2i(3,2))
-	for f in flags:
-		create_noun(Noun.TYPE.FLAG,f)
-	
-	var bombs = layout.get_used_cells_by_id(0,Vector2i(0,3))
-	for b in bombs:
-		create_noun(Noun.TYPE.BOMB,b)
+	load_layout()
 	
 	create_nountext_objects()
 	create_rule_objects()
@@ -39,17 +21,56 @@ func _input(event: InputEvent) -> void:
 		load_default()
 
 func load_default() -> void:
-	super._ready()
+	controlled_nouns.clear()
+	Global.RULES.clear()
+	
 	var nouns = get_tree().get_nodes_in_group("NOUN")
 	nouns.append_array(get_tree().get_nodes_in_group("NOUNTEXT"))
 	nouns.append_array(get_tree().get_nodes_in_group("RULE"))
 	nouns.append_array(get_tree().get_nodes_in_group("OPERATOR"))
 	for n : Noun in nouns:
-		n.grid_pos = n.default_grid_pos
-		n.type = n.default_type
-		n._ready()
+		n.queue_free()
+		#n.grid_pos = n.default_grid_pos
+		#n.type = n.default_type
+		#
+		#if n is Operator:
+			#n.nounText = null
+			#n.rule = null
+			#n.secNounText = null
+			#n.prevRule = null
+			#n.prevNounText = null
+			#n.prevSecNounText = null
+		#
+		#n._ready()
+	_ready()
 	
 	layout.hide()
+
+func load_layout() -> void:
+	#var walls = layout.get_used_cells_by_id(0,Vector2i(2,2))
+	#for w in walls:
+		#create_noun(Noun.TYPE.WALL,w)
+	#
+	#var rocks = layout.get_used_cells_by_id(0,Vector2i(1,2))
+	#for r in rocks:
+		#create_noun(Noun.TYPE.ROCK,r)
+		#
+	#var player = layout.get_used_cells_by_id(0,Vector2i(0,2))
+	#for p in player:
+		#create_noun(Noun.TYPE.CARDINAL,p)
+	#
+	#var flags = layout.get_used_cells_by_id(0,Vector2i(3,2))
+	#for f in flags:
+		#create_noun(Noun.TYPE.FLAG,f)
+	#
+	#var bombs = layout.get_used_cells_by_id(0,Vector2i(0,3))
+	#for b in bombs:
+		#create_noun(Noun.TYPE.BOMB,b)
+		#
+	for key in Global.nounTileDict:
+		var tiles = layout.get_used_cells_by_id(0,Vector2i(key))
+		for t in tiles:
+			create_noun(Global.nounTileDict[key],t)
 
 func create_rule_objects() -> void:
 	for key in Global.ruleTileDict:
@@ -70,11 +91,11 @@ func create_operator_objects() -> void:
 			add_child(op)
 
 func create_nountext_objects() -> void:
-	for key in Global.nounTileDict:
+	for key in Global.nounTextTileDict:
 		var tiles = layout.get_used_cells_by_id(1,Vector2i(key))
 		for t in tiles:
 			var nt : NounText = load("res://Nouns/Scenes/noun_text.tscn").instantiate()
-			nt.type = Global.nounTileDict[key]
+			nt.type = Global.nounTextTileDict[key]
 			nt.grid_pos = t
 			add_child(nt)
 
@@ -84,4 +105,12 @@ func create_noun(type : Noun.TYPE, grid_pos : Vector2i) -> void:
 	noun.grid_pos = grid_pos
 	noun.part_of_layout = true
 	add_child(noun)
+	pass
+
+func on_open_or_shut_moved() -> void:
+	var nouns = get_tree().get_nodes_in_group("NOUN")
+	var shut = nouns.filter(func(e:Noun): return Global.RULES['shut'].has(e))
+	var open = nouns.filter(func(e:Noun): return Global.RULES['open'].has(e))
+	for n : Noun in nouns:
+		pass
 	pass

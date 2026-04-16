@@ -19,7 +19,8 @@ func _ready() -> void:
 	
 	await get_tree().create_timer(.25).timeout
 	apply_rules()
-	Global.noun_text_moved.connect(on_noun_text_moved)
+	if !Global.noun_text_moved.is_connected(on_noun_text_moved): 
+		Global.noun_text_moved.connect(on_noun_text_moved)
 
 func apply_rules() -> void:
 	find_noun()
@@ -62,6 +63,7 @@ func apply_rules() -> void:
 		pass
 	
 func set_controlled_noun_to_you() -> void:
+	if !rule: return
 	world.controlled_nouns = Global.RULES[rule.string]
 	print(Global.RULES[rule.string])
 	for n : Noun in world.controlled_nouns:
@@ -101,6 +103,8 @@ func match_type() -> void:
 	match operatorType:
 		OPTYPE.IS:
 			sprite_2d.frame = 1
+		OPTYPE.AND:
+			sprite_2d.frame = 15
 	pass
 
 func on_noun_text_moved() -> void:
