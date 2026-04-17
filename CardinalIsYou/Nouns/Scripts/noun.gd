@@ -59,8 +59,6 @@ func move(new_pos: Vector2, pusher : Noun = null) -> void:
 	grid_pos += direction
 	var target_position: Vector2 = (Vector2(grid_pos) + Vector2.ONE * 1/2) * tile_size
 	play_movement_animation(target_position)
-	await get_tree().create_timer(3).timeout
-	remove_self()
 	
 	# check lose
 	if check_lose() :

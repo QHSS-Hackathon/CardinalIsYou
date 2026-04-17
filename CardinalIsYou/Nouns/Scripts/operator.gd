@@ -7,9 +7,15 @@ enum OPTYPE {
 
 @export var operatorType : OPTYPE
 
+var topText : Noun
+var botText : Noun
+var leftText : Noun
+var rightText : Noun
+
 var nounText : NounText # noun that is receiving property
 var secNounText : NounText # noun that receiving noun turns into
 var rule : Rule # rule that is being applied to noun
+var partnerIs : Operator
 
 var prevRule : Rule
 var prevNounText : NounText
@@ -23,13 +29,15 @@ func _ready() -> void:
 		Global.noun_text_moved.connect(on_noun_text_moved)
 
 func apply_rules() -> void:
-	find_noun()
+	find_receivers()
 	find_rule()
+	print(Global.RULES)
 	
 	if (!rule and !secNounText) or !nounText:
 		if !prevRule : return
+		print("ok")
 		# unset rule
-		Global.RULES[prevRule.string] = []
+		Global.RULES[prevRule.string].clear()
 		# unlight
 		prevRule.modulate = Color(0.735, 0.735, 0.735, 1.0)
 		if prevNounText: prevNounText.modulate = Color(0.735, 0.735, 0.735, 1.0)
@@ -43,6 +51,19 @@ func apply_rules() -> void:
 	self.modulate = Color(1.5,1.5,1.5, 1.0)
 	
 	# proposition is valid
+	match operatorType:
+		OPTYPE.IS:
+			apply_is_operator()
+
+func apply_and_operator() -> void:
+	find_is()
+	
+	nounText = partnerIs.nounText
+	nounText.match_nouns()
+	
+	pass
+
+func apply_is_operator() -> void:
 	nounText.match_nouns()
 	if rule:
 		# set rule for every noun
@@ -60,7 +81,6 @@ func apply_rules() -> void:
 			n.type = secNounText.type
 			n.match_type()
 			secNounText.match_nouns()
-		pass
 	
 func set_controlled_noun_to_you() -> void:
 	if !rule: return
@@ -69,14 +89,21 @@ func set_controlled_noun_to_you() -> void:
 	for n : Noun in world.controlled_nouns:
 		n.top_level = true
 
-func find_noun() -> void:
+func find_receivers() -> void:
 	nounText = null
 	var topPos = grid_pos + Vector2(0,-1)
 	var leftPos = grid_pos + Vector2(-1,0)
 	
 	var nounTexts = get_tree().get_nodes_in_group("NOUNTEXT")
 	for nt : NounText in nounTexts :
-		if nt.grid_pos == topPos or nt.grid_pos == leftPos:
+		if nt.grid_pos == topPos:
+			rightText = nt
+			
+			nounText = nt
+			prevNounText = nounText
+		if nt.grid_pos == leftPos:
+			leftText = nt
+			
 			nounText = nt
 			prevNounText = nounText
 		
@@ -97,7 +124,13 @@ func find_rule() -> void:
 				secNounText = t
 				prevSecNounText = secNounText
 			
-		
+func find_is() -> void:
+	var ops = get_tree().get_nodes_in_group("OPERATOR")
+	var appliedRules : Array
+	for o : Operator in ops:
+		if o.type != OPTYPE.IS: continue
+		if o.grid_pos == grid_pos - Vector2(0,2) and o.grid_pos == grid_pos - Vector2(2,0):
+			partnerIs = o
 
 func match_type() -> void:
 	match operatorType:
