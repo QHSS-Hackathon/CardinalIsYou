@@ -1,7 +1,45 @@
-[gd_scene load_steps=3 format=3 uid="uid://lkl7rhkv4mw1"]
+[gd_scene load_steps=6 format=3 uid="uid://lkl7rhkv4mw1"]
 
 [ext_resource type="Script" uid="uid://ddqu7wun17kvh" path="res://Nouns/Scripts/operator.gd" id="1_uvbgk"]
 [ext_resource type="Texture2D" uid="uid://b4beyyj7khpyr" path="res://Nouns/Assets/text.png" id="2_g3ukr"]
+
+[sub_resource type="Animation" id="Animation_johas"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ucux7"]
+resource_name = "walk"
+length = 0.8
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4568l"]
+_data = {
+&"RESET": SubResource("Animation_johas"),
+&"walk": SubResource("Animation_ucux7")
+}
 
 [node name="Operator" type="Node2D" groups=["OPERATOR"]]
 script = ExtResource("1_uvbgk")
@@ -10,3 +48,8 @@ script = ExtResource("1_uvbgk")
 texture = ExtResource("2_g3ukr")
 hframes = 4
 vframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_4568l")
+}
