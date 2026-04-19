@@ -74,7 +74,6 @@ func apply_rules() -> void:
 					run_condition_invalid()
 					return
 				apply_is_operator(topText,botText)
-				
 		OPTYPE.AND:
 			apply_and_operator()
 func reset_rule() -> void:
@@ -83,13 +82,12 @@ func reset_rule() -> void:
 			run_condition_invalid()
 			return
 		if operatorType == OPTYPE.IS: apply_is_operator(leftText,rightText, false)
-		if operatorType == OPTYPE.AND: apply_and_operator(false)
 	if topText and botText:
+		print("ok")
 		if !(topText is NounText): 
 			run_condition_invalid()
 			return
 		if operatorType == OPTYPE.IS: apply_is_operator(topText,botText, false)
-		if operatorType == OPTYPE.AND: apply_and_operator(false)
 	pass
 func run_condition_invalid() -> void:
 	if rightText : rightText.modulate = Color(0.735, 0.735, 0.735, 1.0)
@@ -102,7 +100,7 @@ func run_condition_invalid() -> void:
 	return # if proposition incomplete, stop
 		
 var at_end : bool
-func apply_and_operator(condition : bool = true) -> void:
+func apply_and_operator() -> void:
 	at_end = find_is()
 	if !partnerIs:
 		run_condition_invalid()
@@ -114,18 +112,18 @@ func apply_and_operator(condition : bool = true) -> void:
 	
 	if at_end:
 		if partnerIs.leftText:
-			apply_is_operator(partnerIs.leftText, rightText,condition)
-			apply_is_operator(partnerIs.leftText, leftText,condition)
+			apply_is_operator(partnerIs.leftText, rightText)
+			#apply_is_operator(partnerIs.leftText, leftText)
 		if partnerIs.topText:
-			apply_is_operator(partnerIs.topText, botText,condition)
-			apply_is_operator(partnerIs.topText, topText,condition)
+			apply_is_operator(partnerIs.topText, botText)
+			#apply_is_operator(partnerIs.topText, topText)
 	else:
 		if leftText and rightText:
-			apply_is_operator(leftText,partnerIs.rightText,condition)
-			apply_is_operator(rightText,partnerIs.rightText,condition)
+			apply_is_operator(leftText,partnerIs.rightText)
+			#apply_is_operator(rightText,partnerIs.rightText)
 		if botText and topText:
-			apply_is_operator(botText,partnerIs.botText,condition)
-			apply_is_operator(topText,partnerIs.botText,condition)
+			#apply_is_operator(botText,partnerIs.botText)
+			apply_is_operator(topText,partnerIs.botText)
 			
 	pass
 
@@ -138,9 +136,11 @@ func apply_is_operator(textOne : NounText, textTwo : Noun, condition : bool = tr
 		# set rule for every noun of textOne type
 		var nounArr = []
 		for n : Noun in get_tree().get_nodes_in_group("NOUN"):
+			if Global.RULES[textTwo.string].has(n): continue # filter out nouns already set to this rule
 			if n.type == textOne.type:
 				nounArr.append(n)
-		Global.RULES[textTwo.string] = nounArr if condition else []
+		#Global.RULES[textTwo.string] = nounArr
+		if condition: Global.RULES[textTwo.string].append_array(nounArr) 
 		
 		textTwo.modulate = Color(1.5,1.5,1.5, 1.0) if condition else Color(0.735, 0.735, 0.735, 1.0)
 		# if rule is 'you', allow player to control noun

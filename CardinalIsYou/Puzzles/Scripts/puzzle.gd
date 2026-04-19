@@ -45,7 +45,6 @@ func load_default() -> void:
 	for i in range(5):
 		await get_tree().process_frame
 	_ready()
-	print(Global.RULES)
 	
 	layout.hide()
 

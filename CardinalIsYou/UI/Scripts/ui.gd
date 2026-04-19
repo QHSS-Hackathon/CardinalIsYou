@@ -17,9 +17,11 @@ func _ready() -> void:
 	timer.hide()
 	pause_menu.hide()
 	puzzles = [
+		load("res://Puzzles/Scenes/puzzle5.tscn").instantiate(),
 		load("res://Puzzles/Scenes/puzzle1.tscn").instantiate(),
 		load("res://Puzzles/Scenes/puzzle0.tscn").instantiate(),
 		load("res://Puzzles/Scenes/puzzle2.tscn").instantiate(),
+		load("res://Puzzles/Scenes/puzzle6.tscn").instantiate(),
 		load("res://Puzzles/Scenes/puzzle4.tscn").instantiate(),
 		load("res://Puzzles/Scenes/puzzle3.tscn").instantiate(),
 	]
