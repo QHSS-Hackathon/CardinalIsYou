@@ -37,3 +37,13 @@ var ruleTileDict : Dictionary = {
 
 var RULES : Dictionary =  {
 }
+
+func _ready() -> void:
+	noun_text_moved.connect(on_noun_text_moved)
+	
+func on_noun_text_moved() -> void:
+	# reset rules
+	for k in Rule.RULETYPE:
+		var key = k.to_lower()
+		Global.RULES[key] = []
+	

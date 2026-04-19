@@ -7,6 +7,9 @@
 texture = ExtResource("1_rp6ds")
 0:0/0 = 0
 1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_6n3p4"]
 sources/0 = SubResource("TileSetAtlasSource_arvki")

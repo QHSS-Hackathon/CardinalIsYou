@@ -5,6 +5,7 @@ extends Node2D
 @onready var tilemap : TileWorld = get_tree().get_first_node_in_group("TILEMAP")
 
 var dir : Vector2
+var borders : Array
 
 var controlled_nouns : Array
 

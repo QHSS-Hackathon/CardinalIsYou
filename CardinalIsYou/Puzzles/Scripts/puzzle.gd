@@ -22,14 +22,14 @@ func _input(event: InputEvent) -> void:
 
 func load_default() -> void:
 	controlled_nouns.clear()
-	Global.RULES.clear()
+	#Global.RULES.clear()
 	
 	var nouns = get_tree().get_nodes_in_group("NOUN")
 	nouns.append_array(get_tree().get_nodes_in_group("NOUNTEXT"))
 	nouns.append_array(get_tree().get_nodes_in_group("RULE"))
 	nouns.append_array(get_tree().get_nodes_in_group("OPERATOR"))
 	for n : Noun in nouns:
-		n.queue_free()
+		n.remove_self()
 		#n.grid_pos = n.default_grid_pos
 		#n.type = n.default_type
 		#
@@ -42,35 +42,22 @@ func load_default() -> void:
 			#n.prevSecNounText = null
 		#
 		#n._ready()
+	for i in range(5):
+		await get_tree().process_frame
 	_ready()
+	print(Global.RULES)
 	
 	layout.hide()
 
 func load_layout() -> void:
-	#var walls = layout.get_used_cells_by_id(0,Vector2i(2,2))
-	#for w in walls:
-		#create_noun(Noun.TYPE.WALL,w)
-	#
-	#var rocks = layout.get_used_cells_by_id(0,Vector2i(1,2))
-	#for r in rocks:
-		#create_noun(Noun.TYPE.ROCK,r)
-		#
-	#var player = layout.get_used_cells_by_id(0,Vector2i(0,2))
-	#for p in player:
-		#create_noun(Noun.TYPE.CARDINAL,p)
-	#
-	#var flags = layout.get_used_cells_by_id(0,Vector2i(3,2))
-	#for f in flags:
-		#create_noun(Noun.TYPE.FLAG,f)
-	#
-	#var bombs = layout.get_used_cells_by_id(0,Vector2i(0,3))
-	#for b in bombs:
-		#create_noun(Noun.TYPE.BOMB,b)
-		#
+	# Nouns
 	for key in Global.nounTileDict:
 		var tiles = layout.get_used_cells_by_id(0,Vector2i(key))
 		for t in tiles:
 			create_noun(Global.nounTileDict[key],t)
+	# world borders
+	borders = tilemap.floor.get_used_cells_by_id(0,Vector2i(1,0),0)
+	
 
 func create_rule_objects() -> void:
 	for key in Global.ruleTileDict:

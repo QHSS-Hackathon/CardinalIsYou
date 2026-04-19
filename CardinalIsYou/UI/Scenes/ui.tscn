@@ -1,0 +1,286 @@
+[gd_scene load_steps=16 format=3 uid="uid://cvsss1cs8hulc"]
+
+[ext_resource type="Script" uid="uid://n5mhlunkotui" path="res://UI/Scripts/ui.gd" id="1_44q3l"]
+[ext_resource type="Texture2D" uid="uid://dug2wr2w4kpwi" path="res://UI/Assets/mainmenu.png" id="2_pyqth"]
+[ext_resource type="FontFile" uid="uid://c82ugi6u3mpg6" path="res://Nouns/Assets/Mystery Font.ttf" id="2_rbgpe"]
+[ext_resource type="FontFile" uid="uid://dh6wdj8b6an6" path="res://Nouns/Assets/baba.ttf" id="3_2fejo"]
+[ext_resource type="Texture2D" uid="uid://cbgfquj51c7h8" path="res://UI/Assets/clockIcon.png" id="3_kd6an"]
+[ext_resource type="Texture2D" uid="uid://dqfyjgwkqym60" path="res://UI/Assets/pausemenu.png" id="6_mlkve"]
+[ext_resource type="Texture2D" uid="uid://mcmkxpm1xifw" path="res://UI/Assets/wasd.png" id="7_mhi7t"]
+[ext_resource type="Texture2D" uid="uid://epvhqb6dpq7g" path="res://UI/Assets/arrows.png" id="8_40vxy"]
+[ext_resource type="Texture2D" uid="uid://dh3fqhqfn78io" path="res://UI/Assets/space.png" id="9_75mst"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_pyqth"]
+line_spacing = 4.0
+font = ExtResource("3_2fejo")
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_bvsul"]
+font = ExtResource("3_2fejo")
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_q631c"]
+font = ExtResource("3_2fejo")
+
+[sub_resource type="Animation" id="Animation_bujes"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Timer/TimeLabel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Timer/TimeLabel:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(90, -5)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Timer/TimeLabel:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_kd6an"]
+resource_name = "flash_timer"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Timer/TimeLabel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Timer/TimeLabel:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(90, -5), Vector2(-120, -5)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Timer/TimeLabel:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bujes"]
+_data = {
+&"RESET": SubResource("Animation_bujes"),
+&"flash_timer": SubResource("Animation_kd6an")
+}
+
+[node name="UI" type="CanvasLayer" groups=["UI"]]
+script = ExtResource("1_44q3l")
+puzzles = [null]
+
+[node name="MainMenu" type="Control" parent="."]
+custom_minimum_size = Vector2(1152, 648)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="TextureRect" parent="MainMenu"]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("2_pyqth")
+stretch_mode = 2
+
+[node name="Start" type="Button" parent="MainMenu"]
+layout_mode = 0
+offset_left = 455.0
+offset_top = 266.0
+offset_right = 704.0
+offset_bottom = 337.0
+flat = true
+
+[node name="Controls" type="Button" parent="MainMenu"]
+layout_mode = 0
+offset_left = 451.0
+offset_top = 398.0
+offset_right = 700.0
+offset_bottom = 469.0
+flat = true
+
+[node name="quit" type="Button" parent="MainMenu"]
+layout_mode = 0
+offset_left = 452.0
+offset_top = 526.0
+offset_right = 701.0
+offset_bottom = 597.0
+flat = true
+
+[node name="Timer" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 87.0
+offset_bottom = 73.0
+
+[node name="TextureRect" type="TextureRect" parent="Timer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(2, 2)
+texture = ExtResource("3_kd6an")
+
+[node name="TimeLabel" type="Label" parent="Timer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 90.0
+offset_top = -5.0
+offset_right = 201.00008
+offset_bottom = 67.0
+theme_override_fonts/font = ExtResource("2_rbgpe")
+text = "00:00"
+label_settings = SubResource("LabelSettings_pyqth")
+
+[node name="TimerNode" type="Timer" parent="Timer/TimeLabel"]
+autostart = true
+
+[node name="PauseMenu" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(1152, 648)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="TextureRect" type="TextureRect" parent="PauseMenu"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("6_mlkve")
+
+[node name="Title" type="Label" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -117.0
+offset_top = -42.000004
+offset_right = 47.0
+offset_bottom = 53.999996
+grow_horizontal = 2
+scale = Vector2(1.5, 1.5)
+text = "Pause"
+label_settings = SubResource("LabelSettings_bvsul")
+
+[node name="Controls" type="Label" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -289.0
+offset_top = 132.0
+offset_right = 287.0
+offset_bottom = 282.0
+grow_horizontal = 2
+text = "Controls:
+	use         					                              or                                   for      movement
+press                                                  for       restart"
+label_settings = SubResource("LabelSettings_q631c")
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PauseMenu/Controls"]
+layout_mode = 0
+offset_left = 134.0
+offset_top = 65.0
+offset_right = 182.0
+offset_bottom = 97.0
+texture = ExtResource("7_mhi7t")
+stretch_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="PauseMenu/Controls"]
+layout_mode = 0
+offset_left = 244.0
+offset_top = 65.0
+offset_right = 292.0
+offset_bottom = 97.0
+texture = ExtResource("8_40vxy")
+stretch_mode = 2
+
+[node name="TextureRect3" type="TextureRect" parent="PauseMenu/Controls"]
+layout_mode = 0
+offset_left = 203.33336
+offset_top = 122.0
+offset_right = 251.33337
+offset_bottom = 138.0
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("9_75mst")
+stretch_mode = 2
+
+[node name="Rules" type="Label" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -297.0
+offset_top = 296.0
+offset_right = 279.0
+offset_bottom = 446.0
+grow_horizontal = 2
+text = "Rules:"
+label_settings = SubResource("LabelSettings_q631c")
+horizontal_alignment = 1
+
+[node name="Continue" type="Button" parent="PauseMenu"]
+layout_mode = 0
+offset_left = 451.0
+offset_top = 558.0
+offset_right = 700.0
+offset_bottom = 629.0
+flat = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_bujes")
+}
+
+[connection signal="pressed" from="MainMenu/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MainMenu/Controls" to="." method="handle_pause"]
+[connection signal="pressed" from="MainMenu/quit" to="." method="_on_quit_pressed"]
+[connection signal="mouse_entered" from="Timer" to="." method="_on_timer_mouse_entered"]
+[connection signal="mouse_exited" from="Timer" to="." method="_on_timer_mouse_exited"]
+[connection signal="timeout" from="Timer/TimeLabel/TimerNode" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="PauseMenu/Continue" to="." method="handle_pause"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

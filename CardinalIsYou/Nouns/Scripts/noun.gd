@@ -12,6 +12,7 @@ enum TYPE {
 @onready var tile_size = tilemap.floor.tile_set.tile_size.x
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var world : World = get_tree().get_first_node_in_group("WORLD")
+@onready var ui : UI = get_tree().get_first_node_in_group("UI")
 @onready var anim: AnimationPlayer = $AnimationPlayer
 
 
@@ -21,7 +22,7 @@ enum TYPE {
 @export var blocked : bool = false
 
 var dir : Vector2
-var tween_playing : bool
+static var tween_playing : bool
 
 var default_grid_pos : Vector2
 var default_type : Noun.TYPE
@@ -33,7 +34,16 @@ func _ready() -> void:
 	set_grid_position(grid_pos)
 	match_type()
 	modulate = Color(0.997, 0.997, 0.997, 1.0)
-	
+
+func _process(delta: float) -> void:
+	if !world: 
+		world = get_tree().get_first_node_in_group("WORLD") 
+		return
+	if Global.RULES['win'].has(self):
+		for n : Noun in world.controlled_nouns:
+			if n.grid_pos == grid_pos and !tween_playing:
+				ui.current_level += 1
+				ui.load_level(ui.current_level - 1)
 
 func set_grid_position(newGridPos : Vector2) -> void:
 	grid_pos = newGridPos
@@ -107,7 +117,7 @@ func check_push_is_blocked(direction : Vector2) -> bool:
 
 func check_blocked(direction : Vector2) -> bool:
 	var obstacles = Global.RULES["stop"].map(func(e : Noun):return e.grid_pos)
-	if obstacles.has(grid_pos + direction):
+	if obstacles.has(grid_pos + direction) or world.borders.has(Vector2i(grid_pos + direction)):
 		blocked = true
 		play_blocked_animation(direction) 
 		return true
@@ -131,7 +141,7 @@ func check_open(direction : Vector2) -> bool:
 	
 	for n : Noun in shut:
 		if n.grid_pos == grid_pos:
-			n.queue_free()
+			n.remove_self()
 			return true
 	grid_pos -= direction
 	return false
@@ -185,8 +195,8 @@ func match_type() -> void:
 			sprite_2d.texture = load("res://Nouns/Assets/bird.png")
 			sprite_2d.scale = Vector2(1,1)
 		TYPE.WALL:
-			sprite_2d.texture = load("res://Nouns/Assets/ampersands.jpg")
-			sprite_2d.scale = Vector2(0.018,0.018)
+			sprite_2d.texture = load("res://Nouns/Assets/fence.png")
+			sprite_2d.scale = Vector2(1,1)
 		TYPE.ROCK:
 			sprite_2d.texture = load("res://Nouns/Assets/rock.png")
 			sprite_2d.scale = Vector2(1,1)
@@ -202,6 +212,11 @@ func match_type() -> void:
 			sprite_2d.scale = Vector2(1,1)
 
 func remove_self() -> void:
+	tween_playing = false
 	if world.controlled_nouns.has(self):
 		world.controlled_nouns.remove_at(world.controlled_nouns.find(self))
+		
+	for key in Global.RULES:
+		if Global.RULES[key].has(self):
+			Global.RULES[key].remove_at(Global.RULES[key].find(self))
 	queue_free()

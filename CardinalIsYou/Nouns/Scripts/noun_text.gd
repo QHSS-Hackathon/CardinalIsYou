@@ -7,6 +7,7 @@ func _ready() -> void:
 	super._ready()
 	match_nouns()
 	
+	Global.noun_text_moved.connect(on_noun_text_moved)
 	
 
 func set_grid_position(newGridPos : Vector2) -> void:
@@ -23,6 +24,9 @@ func match_nouns() -> void:
 	
 	nounArray = nouns 
 	pass
+
+func on_noun_text_moved() -> void:
+	match_nouns()
 
 func match_type() -> void:
 	match type:

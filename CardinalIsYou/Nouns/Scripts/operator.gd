@@ -83,11 +83,13 @@ func reset_rule() -> void:
 			run_condition_invalid()
 			return
 		if operatorType == OPTYPE.IS: apply_is_operator(leftText,rightText, false)
+		if operatorType == OPTYPE.AND: apply_and_operator(false)
 	if topText and botText:
 		if !(topText is NounText): 
 			run_condition_invalid()
 			return
 		if operatorType == OPTYPE.IS: apply_is_operator(topText,botText, false)
+		if operatorType == OPTYPE.AND: apply_and_operator(false)
 	pass
 func run_condition_invalid() -> void:
 	if rightText : rightText.modulate = Color(0.735, 0.735, 0.735, 1.0)
@@ -100,7 +102,7 @@ func run_condition_invalid() -> void:
 	return # if proposition incomplete, stop
 		
 var at_end : bool
-func apply_and_operator() -> void:
+func apply_and_operator(condition : bool = true) -> void:
 	at_end = find_is()
 	if !partnerIs:
 		run_condition_invalid()
@@ -112,18 +114,34 @@ func apply_and_operator() -> void:
 	
 	if at_end:
 		if partnerIs.leftText:
-			apply_is_operator(partnerIs.leftText, rightText)
-			apply_is_operator(partnerIs.leftText, leftText)
+			apply_is_operator(partnerIs.leftText, rightText,condition)
+			apply_is_operator(partnerIs.leftText, leftText,condition)
 		if partnerIs.topText:
-			apply_is_operator(partnerIs.topText, botText)
-			apply_is_operator(partnerIs.topText, topText)
+			apply_is_operator(partnerIs.topText, botText,condition)
+			apply_is_operator(partnerIs.topText, topText,condition)
+	else:
+		if leftText and rightText:
+			apply_is_operator(leftText,partnerIs.rightText,condition)
+			apply_is_operator(rightText,partnerIs.rightText,condition)
+		if botText and topText:
+			apply_is_operator(botText,partnerIs.botText,condition)
+			apply_is_operator(topText,partnerIs.botText,condition)
+			
 	pass
 
 func apply_is_operator(textOne : NounText, textTwo : Noun, condition : bool = true) -> void:
 	textOne.match_nouns()
 	if textTwo is Rule:
-		# set rule for every noun
-		Global.RULES[textTwo.string] = textOne.nounArray if condition else []
+		await get_tree().process_frame
+		await get_tree().process_frame
+		await get_tree().process_frame
+		# set rule for every noun of textOne type
+		var nounArr = []
+		for n : Noun in get_tree().get_nodes_in_group("NOUN"):
+			if n.type == textOne.type:
+				nounArr.append(n)
+		Global.RULES[textTwo.string] = nounArr if condition else []
+		
 		textTwo.modulate = Color(1.5,1.5,1.5, 1.0) if condition else Color(0.735, 0.735, 0.735, 1.0)
 		# if rule is 'you', allow player to control noun
 		if textTwo.ruleType == Rule.RULETYPE.YOU:
@@ -136,10 +154,12 @@ func apply_is_operator(textOne : NounText, textTwo : Noun, condition : bool = tr
 			if n.type != textOne.type: continue
 			n.type = textTwo.type
 			n.match_type()
+			textOne.match_nouns()
 			textTwo.match_nouns()
 	
 func set_controlled_noun_to_you(textTwo : Noun) -> void:
 	if !textTwo: return
+	world = get_tree().get_first_node_in_group("WORLD")
 	world.controlled_nouns = Global.RULES[textTwo.string]
 	for n : Noun in world.controlled_nouns:
 		n.top_level = true
