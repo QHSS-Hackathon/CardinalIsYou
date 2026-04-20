@@ -61,10 +61,35 @@ tracks/2/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Timer/PuzzleLabel:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Timer/PuzzleLabel:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_kd6an"]
 resource_name = "flash_timer"
 length = 6.0
+step = 1.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -101,6 +126,30 @@ tracks/2/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Timer/PuzzleLabel:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Timer/PuzzleLabel:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bujes"]
 _data = {
@@ -132,6 +181,7 @@ offset_left = 455.0
 offset_top = 266.0
 offset_right = 704.0
 offset_bottom = 337.0
+focus_mode = 0
 flat = true
 
 [node name="Controls" type="Button" parent="MainMenu"]
@@ -140,6 +190,7 @@ offset_left = 451.0
 offset_top = 398.0
 offset_right = 700.0
 offset_bottom = 469.0
+focus_mode = 0
 flat = true
 
 [node name="quit" type="Button" parent="MainMenu"]
@@ -148,6 +199,7 @@ offset_left = 452.0
 offset_top = 526.0
 offset_right = 701.0
 offset_bottom = 597.0
+focus_mode = 0
 flat = true
 
 [node name="Timer" type="Control" parent="."]
@@ -179,7 +231,19 @@ label_settings = SubResource("LabelSettings_pyqth")
 unique_name_in_owner = true
 autostart = true
 
+[node name="PuzzleLabel" type="Label" parent="Timer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 3.0
+offset_top = 73.0
+offset_right = 186.0
+offset_bottom = 145.0
+theme_override_fonts/font = ExtResource("2_rbgpe")
+text = "Puzzle      "
+label_settings = SubResource("LabelSettings_pyqth")
+
 [node name="PauseMenu" type="Control" parent="."]
+visible = false
 custom_minimum_size = Vector2(1152, 648)
 layout_mode = 3
 anchors_preset = 0
@@ -192,7 +256,8 @@ offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("6_mlkve")
 
-[node name="Title" type="Label" parent="PauseMenu"]
+[node name="PauseTitle" type="Label" parent="PauseMenu"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -271,6 +336,7 @@ offset_left = 451.0
 offset_top = 558.0
 offset_right = 700.0
 offset_bottom = 629.0
+focus_mode = 0
 flat = true
 
 [node name="WinMenu" type="Control" parent="."]
@@ -325,6 +391,7 @@ offset_left = 451.0
 offset_top = 558.0
 offset_right = 700.0
 offset_bottom = 629.0
+focus_mode = 0
 flat = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

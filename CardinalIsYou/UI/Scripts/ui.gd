@@ -19,15 +19,18 @@ func _ready() -> void:
 	timer.hide()
 	pause_menu.hide()
 	win_menu.hide()
+	%PuzzleLabel.hide()
 	puzzles = [
-		load("res://Puzzles/Scenes/puzzle5.tscn").instantiate(),
-		load("res://Puzzles/Scenes/puzzle1.tscn").instantiate(),
-		load("res://Puzzles/Scenes/puzzle0.tscn").instantiate(),
-		load("res://Puzzles/Scenes/puzzle2.tscn").instantiate(),
-		load("res://Puzzles/Scenes/puzzle6.tscn").instantiate(),
-		load("res://Puzzles/Scenes/puzzle4.tscn").instantiate(),
-		load("res://Puzzles/Scenes/puzzle3.tscn").instantiate(),
+		load("res://Puzzles/Scenes/puzzle5.tscn").instantiate(), # 1
+		load("res://Puzzles/Scenes/puzzle1.tscn").instantiate(), # 2
+		load("res://Puzzles/Scenes/puzzle0.tscn").instantiate(), # 3
+		load("res://Puzzles/Scenes/puzzle2.tscn").instantiate(), # 4
+		load("res://Puzzles/Scenes/puzzle6.tscn").instantiate(), # 5
+		load("res://Puzzles/Scenes/puzzle4.tscn").instantiate(), # 6
+		load("res://Puzzles/Scenes/puzzle7.tscn").instantiate(), # 7
+		load("res://Puzzles/Scenes/puzzle3.tscn").instantiate(), # 8
 	]
+	%PuzzleLabel.text = "Puzzle      " + str(current_level)
 
 func load_level(index : int) -> void:
 	# go to win screen
@@ -68,9 +71,12 @@ func _input(event: InputEvent) -> void:
 		load_level(current_level - 1)
 	
 func handle_pause() -> void:
+	%PauseTitle.text = "Pause"
 	pause_menu.visible = !pause_menu.visible
 
 func _on_start_pressed() -> void:
+	handle_pause()
+	%PauseTitle.text = ""
 	main_menu.hide()
 	timer.show()
 	game.add_child(puzzles[current_level - 1])
@@ -95,8 +101,11 @@ func _on_timer_mouse_entered() -> void:
 	anim.stop()
 	anim.play("RESET")
 	%TimeLabel.show()
+	%PuzzleLabel.show()
+	%PuzzleLabel.text = "Puzzle      " + str(current_level)
 func _on_timer_mouse_exited() -> void:
 	%TimeLabel.hide()
+	%PuzzleLabel.hide()
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "flash_timer":

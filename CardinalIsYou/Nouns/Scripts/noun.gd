@@ -22,6 +22,7 @@ enum TYPE {
 @export var type : TYPE
 @export var blocked : bool = false
 
+var default_frame : int = 9999999
 var dir : Vector2
 static var tween_playing : bool
 
@@ -36,10 +37,18 @@ func _ready() -> void:
 	set_grid_position(grid_pos)
 	match_type()
 	modulate = Color(1.0, 1.0, 1.0, 1.0)
+	
+	for i in range(5):
+		await get_tree().process_frame
+	default_frame = sprite_2d.frame
 
 func _process(delta: float) -> void:
 	if !world: 
 		world = get_tree().get_first_node_in_group("WORLD") 
+		return
+	
+	if check_lose() and world.controlled_nouns.has(self):
+		remove_self()
 		return
 	if Global.RULES['win'].has(self):
 		animated_sprite_2d.show()
@@ -67,9 +76,6 @@ func move(new_pos: Vector2, _pusher : Noun = null) -> void:
 	blocked = false
 	var direction: Vector2 = new_pos - grid_pos
 	# check for lose before movement
-	if check_lose() :
-		world.load_default()
-		return
 	
 	# check open
 	if check_open(direction) : 
@@ -88,10 +94,6 @@ func move(new_pos: Vector2, _pusher : Noun = null) -> void:
 	var target_position: Vector2 = (Vector2(grid_pos) + Vector2.ONE * 1/2) * tile_size
 	play_movement_animation(target_position)
 	
-	# check lose
-	if check_lose() :
-		world.load_default()
-		return
 	
 	# emit signal if nountext
 	if self is NounText : Global.noun_text_moved.emit()
@@ -171,7 +173,7 @@ func play_movement_animation(target_position : Vector2) -> void:
 	await tween.finished
 	dir = Vector2.ZERO
 	
-	await get_tree().create_timer(.025).timeout
+	#await get_tree().create_timer(.025).timeout
 	tween_playing = false
 	occupied_tiles.append(grid_pos)
 

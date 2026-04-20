@@ -31,6 +31,7 @@ func _ready() -> void:
 		Global.noun_text_moved.connect(on_noun_text_moved)
 
 func apply_rules() -> void:
+	reset_rule()
 	find_receivers()
 	find_ends()
 	
@@ -77,7 +78,6 @@ func apply_rules() -> void:
 		OPTYPE.AND:
 			apply_and_operator()
 func reset_rule() -> void:
-	return
 	if leftText and rightText:
 		if !(leftText is NounText): 
 			run_condition_invalid()

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=4 uid="uid://bmsjdjkqwcjpy"]
+[gd_scene load_steps=5 format=4 uid="uid://bmsjdjkqwcjpy"]
 
 [ext_resource type="Script" uid="uid://xve1dkbj0f2w" path="res://Puzzles/Scripts/puzzle.gd" id="1_0bgt4"]
 [ext_resource type="PackedScene" uid="uid://cx33eqa445nk2" path="res://TileMap/Scenes/tile_map.tscn" id="2_vb6kf"]
 [ext_resource type="TileSet" uid="uid://mpimig2gj4n4" path="res://Puzzles/layoutTileSet.tres" id="3_g4rri"]
+[ext_resource type="PackedScene" uid="uid://dhxcpsx7g4v4r" path="res://Puzzles/Scenes/note.tscn" id="4_vb6kf"]
 
 [node name="Puzzle3" type="Node2D" groups=["PUZZLE", "WORLD"]]
 script = ExtResource("1_0bgt4")
@@ -20,5 +21,13 @@ tile_set = ExtResource("3_g4rri")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(168, 96)
 zoom = Vector2(3.2, 3.2)
+
+[node name="Note" parent="." instance=ExtResource("4_vb6kf")]
+unique_name_in_owner = true
+offset_top = 11.0
+offset_right = 487.0
+offset_bottom = 159.0
+text = "Last     Level!
+Good     Luck!"
 
 [editable path="TileMap"]
