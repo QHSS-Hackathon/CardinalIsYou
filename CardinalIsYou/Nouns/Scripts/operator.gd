@@ -25,14 +25,12 @@ var partnerIs : Operator
 
 func _ready() -> void:
 	super._ready()
-	
 	await get_tree().create_timer(.25).timeout
 	apply_rules()
 	if !Global.noun_text_moved.is_connected(on_noun_text_moved): 
 		Global.noun_text_moved.connect(on_noun_text_moved)
 
 func apply_rules() -> void:
-	reset_rule()
 	find_receivers()
 	find_ends()
 	
@@ -56,8 +54,6 @@ func apply_rules() -> void:
 	#if (rightText and !leftText) or (!rightText and leftText):
 
 	# light up since valid
-	if leftText: leftText.modulate = Color(1.5,1.5,1.5, 1.0)
-	if topText: topText.modulate = Color(1.5,1.5,1.5, 1.0)
 	self.modulate = Color(1.5,1.5,1.5, 1.0)
 	valid = true
 	
@@ -68,15 +64,20 @@ func apply_rules() -> void:
 				if !(leftText is NounText): 
 					run_condition_invalid()
 					return
+				leftText.modulate = Color(1.5,1.5,1.5, 1.0)
+				rightText.modulate = Color(1.5,1.5,1.5, 1.0)
 				apply_is_operator(leftText,rightText)
 			if topText and botText:
 				if !(topText is NounText): 
 					run_condition_invalid()
 					return
+				topText.modulate = Color(1.5,1.5,1.5, 1.0)
+				botText.modulate = Color(1.5,1.5,1.5, 1.0)
 				apply_is_operator(topText,botText)
 		OPTYPE.AND:
 			apply_and_operator()
 func reset_rule() -> void:
+	return
 	if leftText and rightText:
 		if !(leftText is NounText): 
 			run_condition_invalid()
@@ -89,11 +90,11 @@ func reset_rule() -> void:
 		if operatorType == OPTYPE.IS: apply_is_operator(topText,botText, false)
 	pass
 func run_condition_invalid() -> void:
-	if rightText : rightText.modulate = Color(0.735, 0.735, 0.735, 1.0)
-	if leftText : leftText.modulate = Color(0.735, 0.735, 0.735, 1.0)
-	if topText : topText.modulate = Color(0.735, 0.735, 0.735, 1.0)
-	if botText : botText.modulate = Color(0.735, 0.735, 0.735, 1.0)
-	self.modulate = Color(0.735, 0.735, 0.735, 1.0)
+	#if rightText : rightText.modulate = Color(0.735, 0.735, 0.735, 1.0)
+	#if leftText : leftText.modulate = Color(0.735, 0.735, 0.735, 1.0)
+	#if topText : topText.modulate = Color(0.735, 0.735, 0.735, 1.0)
+	#if botText : botText.modulate = Color(0.735, 0.735, 0.735, 1.0)
+	#self.modulate = Color(0.735, 0.735, 0.735, 1.0)
 	
 	valid = false
 	return # if proposition incomplete, stop
@@ -118,9 +119,15 @@ func apply_and_operator() -> void:
 			#apply_is_operator(partnerIs.topText, topText)
 	else:
 		if leftText and rightText:
+			if !(leftText is NounText) or !(rightText is NounText): 
+				run_condition_invalid()
+				return
 			apply_is_operator(leftText,partnerIs.rightText)
 			#apply_is_operator(rightText,partnerIs.rightText)
 		if botText and topText:
+			if !(botText is NounText) or !(topText is NounText): 
+				run_condition_invalid()
+				return
 			#apply_is_operator(botText,partnerIs.botText)
 			apply_is_operator(topText,partnerIs.botText)
 			
@@ -217,4 +224,6 @@ func match_type() -> void:
 	pass
 
 func on_noun_text_moved() -> void:
+	Global.make_everything_dark()
+	await get_tree().process_frame
 	apply_rules()

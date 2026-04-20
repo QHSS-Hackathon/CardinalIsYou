@@ -6,7 +6,7 @@ var nounArray : Array
 func _ready() -> void:
 	super._ready()
 	match_nouns()
-	
+	modulate = Color(0.735, 0.735, 0.735, 1.0)
 	
 
 func set_grid_position(newGridPos : Vector2) -> void:

@@ -8,6 +8,14 @@ enum RULETYPE {
 @export var ruleType : RULETYPE
 @export var string : String
 
+func _ready() -> void:
+	animated_sprite_2d.hide()
+	default_grid_pos = grid_pos
+	default_type = type
+	set_grid_position(grid_pos)
+	match_type()
+	modulate = Color(0.735, 0.735, 0.735, 1.0)
+
 func match_type() -> void:
 	match ruleType:
 		RULETYPE.YOU:

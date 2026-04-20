@@ -46,4 +46,11 @@ func on_noun_text_moved() -> void:
 	for k in Rule.RULETYPE:
 		var key = k.to_lower()
 		Global.RULES[key] = []
-	
+
+func make_everything_dark() -> void:
+	var nouns = []
+	nouns.append_array(get_tree().get_nodes_in_group("NOUNTEXT"))
+	nouns.append_array(get_tree().get_nodes_in_group("RULE"))
+	nouns.append_array(get_tree().get_nodes_in_group("OPERATOR"))
+	for n : Noun in nouns:
+		n.modulate = Color(0.735, 0.735, 0.735, 1.0)

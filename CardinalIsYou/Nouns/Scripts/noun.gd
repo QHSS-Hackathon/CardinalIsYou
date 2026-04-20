@@ -35,7 +35,7 @@ func _ready() -> void:
 	default_type = type
 	set_grid_position(grid_pos)
 	match_type()
-	modulate = Color(0.997, 0.997, 0.997, 1.0)
+	modulate = Color(1.0, 1.0, 1.0, 1.0)
 
 func _process(delta: float) -> void:
 	if !world: 
@@ -47,7 +47,7 @@ func _process(delta: float) -> void:
 		z_index = 10
 		for n : Noun in world.controlled_nouns:
 			if n.grid_pos == grid_pos and !tween_playing:
-				ui.current_level += 1
+				ui.current_level += 1	
 				ui.load_level(ui.current_level - 1)
 	else:
 		animated_sprite_2d.hide()
@@ -75,11 +75,11 @@ func move(new_pos: Vector2, _pusher : Noun = null) -> void:
 	if check_open(direction) : 
 		remove_self()
 		return
+	# make check for push
+	if check_push_is_blocked(direction) : return
 	# make check for if target position is a stopping obstacle
 	if check_blocked(direction): return
 	
-	# make check for push
-	if check_push_is_blocked(direction) : return
 	
 	
 	# change grid positon data
@@ -211,7 +211,6 @@ func match_type() -> void:
 		TYPE.FLAG:
 			sprite_2d.texture = load("res://Nouns/Assets/flag.png")
 			sprite_2d.scale = Vector2(1,1)
-			sprite_2d.modulate = Color(1.5,1.5,1.5)
 		TYPE.BOMB:
 			sprite_2d.texture =load("res://Nouns/Assets/bomb.png")
 			sprite_2d.scale = Vector2(1,1)
