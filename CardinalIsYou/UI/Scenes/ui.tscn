@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cvsss1cs8hulc"]
+[gd_scene load_steps=17 format=3 uid="uid://cvsss1cs8hulc"]
 
 [ext_resource type="Script" uid="uid://n5mhlunkotui" path="res://UI/Scripts/ui.gd" id="1_44q3l"]
 [ext_resource type="Texture2D" uid="uid://dug2wr2w4kpwi" path="res://UI/Assets/mainmenu.png" id="2_pyqth"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://mcmkxpm1xifw" path="res://UI/Assets/wasd.png" id="7_mhi7t"]
 [ext_resource type="Texture2D" uid="uid://epvhqb6dpq7g" path="res://UI/Assets/arrows.png" id="8_40vxy"]
 [ext_resource type="Texture2D" uid="uid://dh3fqhqfn78io" path="res://UI/Assets/space.png" id="9_75mst"]
+[ext_resource type="Texture2D" uid="uid://cgefo1a4g8jgb" path="res://UI/Assets/winmenu.png" id="10_mhi7t"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pyqth"]
 line_spacing = 4.0
@@ -175,10 +176,10 @@ text = "00:00"
 label_settings = SubResource("LabelSettings_pyqth")
 
 [node name="TimerNode" type="Timer" parent="Timer/TimeLabel"]
+unique_name_in_owner = true
 autostart = true
 
 [node name="PauseMenu" type="Control" parent="."]
-visible = false
 custom_minimum_size = Vector2(1152, 648)
 layout_mode = 3
 anchors_preset = 0
@@ -272,6 +273,60 @@ offset_right = 700.0
 offset_bottom = 629.0
 flat = true
 
+[node name="WinMenu" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(1152, 648)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="TextureRect" type="TextureRect" parent="WinMenu"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("10_mhi7t")
+
+[node name="Title" type="Label" parent="WinMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -576.0
+offset_right = 192.0
+offset_bottom = 96.0
+grow_horizontal = 2
+scale = Vector2(1.5, 1.5)
+text = "Congratulations"
+label_settings = SubResource("LabelSettings_bvsul")
+horizontal_alignment = 1
+
+[node name="TimeReport" type="Label" parent="WinMenu"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -289.0
+offset_top = 173.0
+offset_right = 287.0
+offset_bottom = 323.0
+grow_horizontal = 2
+text = "You     beat   the   game  in
+
+Well    Done"
+label_settings = SubResource("LabelSettings_q631c")
+horizontal_alignment = 1
+
+[node name="Continue" type="Button" parent="WinMenu"]
+visible = false
+layout_mode = 0
+offset_left = 451.0
+offset_top = 558.0
+offset_right = 700.0
+offset_bottom = 629.0
+flat = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_bujes")
@@ -284,4 +339,5 @@ libraries = {
 [connection signal="mouse_exited" from="Timer" to="." method="_on_timer_mouse_exited"]
 [connection signal="timeout" from="Timer/TimeLabel/TimerNode" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="PauseMenu/Continue" to="." method="handle_pause"]
+[connection signal="pressed" from="WinMenu/Continue" to="." method="handle_pause"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

@@ -83,7 +83,6 @@ func reset_rule() -> void:
 			return
 		if operatorType == OPTYPE.IS: apply_is_operator(leftText,rightText, false)
 	if topText and botText:
-		print("ok")
 		if !(topText is NounText): 
 			run_condition_invalid()
 			return

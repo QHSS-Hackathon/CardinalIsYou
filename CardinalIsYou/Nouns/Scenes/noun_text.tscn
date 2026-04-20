@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://diudpd0btefxn"]
+[gd_scene load_steps=12 format=3 uid="uid://diudpd0btefxn"]
 
 [ext_resource type="Script" uid="uid://d0hdaqv2bic5h" path="res://Nouns/Scripts/noun_text.gd" id="1_btn1x"]
 [ext_resource type="Texture2D" uid="uid://b4beyyj7khpyr" path="res://Nouns/Assets/text.png" id="2_digv8"]
+[ext_resource type="Texture2D" uid="uid://0ycn8prcwlx4" path="res://Nouns/Assets/sparkles.png" id="3_6tsyo"]
 
 [sub_resource type="Animation" id="Animation_johas"]
 length = 0.001
@@ -41,6 +42,42 @@ _data = {
 &"walk": SubResource("Animation_ucux7")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4568l"]
+atlas = ExtResource("3_6tsyo")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fux4e"]
+atlas = ExtResource("3_6tsyo")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ccqlw"]
+atlas = ExtResource("3_6tsyo")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_04sv0"]
+atlas = ExtResource("3_6tsyo")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nrh07"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4568l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fux4e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ccqlw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_04sv0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="NounText" type="Node2D" groups=["NOUNTEXT"]]
 script = ExtResource("1_btn1x")
 
@@ -53,3 +90,6 @@ vframes = 4
 libraries = {
 &"": SubResource("AnimationLibrary_4568l")
 }
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_nrh07")

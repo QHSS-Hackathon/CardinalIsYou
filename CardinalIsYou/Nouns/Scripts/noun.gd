@@ -14,6 +14,7 @@ enum TYPE {
 @onready var world : World = get_tree().get_first_node_in_group("WORLD")
 @onready var ui : UI = get_tree().get_first_node_in_group("UI")
 @onready var anim: AnimationPlayer = $AnimationPlayer
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 
 @export var grid_pos : Vector2
@@ -29,6 +30,7 @@ var default_type : Noun.TYPE
 
 
 func _ready() -> void:
+	animated_sprite_2d.hide()
 	default_grid_pos = grid_pos
 	default_type = type
 	set_grid_position(grid_pos)
@@ -40,10 +42,16 @@ func _process(delta: float) -> void:
 		world = get_tree().get_first_node_in_group("WORLD") 
 		return
 	if Global.RULES['win'].has(self):
+		animated_sprite_2d.show()
+		animated_sprite_2d.play("default")
+		z_index = 10
 		for n : Noun in world.controlled_nouns:
 			if n.grid_pos == grid_pos and !tween_playing:
 				ui.current_level += 1
 				ui.load_level(ui.current_level - 1)
+	else:
+		animated_sprite_2d.hide()
+		animated_sprite_2d.stop()
 
 func set_grid_position(newGridPos : Vector2) -> void:
 	grid_pos = newGridPos
@@ -95,7 +103,7 @@ func check_push_is_blocked(direction : Vector2) -> bool:
 	var push = []
 	if Global.RULES.has("push") : push.append_array(Global.RULES["push"])
 	# put on top
-	z_index = 1
+	#z_index = 1
 	# check if pushing / can move 
 	for p : Noun in push:
 		if p.grid_pos == grid_pos + direction:

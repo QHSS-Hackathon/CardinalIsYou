@@ -5,6 +5,12 @@ extends World
 @onready var player : Player = get_tree().get_first_node_in_group("PLAYER")
 
 func _ready() -> void:
+	var nouns = get_tree().get_nodes_in_group("NOUN")
+	nouns.append_array(get_tree().get_nodes_in_group("NOUNTEXT"))
+	nouns.append_array(get_tree().get_nodes_in_group("RULE"))
+	nouns.append_array(get_tree().get_nodes_in_group("OPERATOR"))
+	for n : Noun in nouns:
+		n.remove_self()
 	load_layout()
 	
 	create_nountext_objects()

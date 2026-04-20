@@ -9,6 +9,8 @@ extends CanvasLayer
 @onready var timer: Control = %Timer
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var pause_menu: Control = $PauseMenu
+@onready var win_menu: Control = $WinMenu
+@onready var time_report: Label = %TimeReport
 
 var minutes : int = 0
 var seconds : int = 0
@@ -16,6 +18,7 @@ var seconds : int = 0
 func _ready() -> void:
 	timer.hide()
 	pause_menu.hide()
+	win_menu.hide()
 	puzzles = [
 		load("res://Puzzles/Scenes/puzzle5.tscn").instantiate(),
 		load("res://Puzzles/Scenes/puzzle1.tscn").instantiate(),
@@ -27,6 +30,13 @@ func _ready() -> void:
 	]
 
 func load_level(index : int) -> void:
+	# go to win screen
+	if index > puzzles.size() - 1:
+		%TimerNode.stop()
+		win_menu.show()
+		%TimeReport.text = "You     beat   the   game  in\n" + %TimeLabel.text + "\nWell    Done"
+		return
+	
 	# clear puzzles
 	var puzzleNodes = get_tree().get_nodes_in_group("PUZZLE")
 	for p : Puzzle in puzzleNodes:
@@ -34,7 +44,9 @@ func load_level(index : int) -> void:
 		p.queue_free()
 		p.controlled_nouns.clear()
 	
-	game.add_child(puzzles[index])
+	var nextPuzzle = puzzles[index]
+	game.add_child(nextPuzzle)
+	nextPuzzle.load_default()
 	
 	var nouns = get_tree().get_nodes_in_group("NOUN")
 	nouns.append_array(get_tree().get_nodes_in_group("NOUNTEXT"))
@@ -51,6 +63,9 @@ func load_level(index : int) -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_released("pause"):
 		handle_pause()
+	if event.is_action_released("ui_text_caret_line_end"):
+		current_level += 1
+		load_level(current_level - 1)
 	
 func handle_pause() -> void:
 	pause_menu.visible = !pause_menu.visible
