@@ -60,7 +60,9 @@ func load_level(index : int) -> void:
 	#await get_tree().create_timer(2).timeout
 	#game.process_mode = Node.PROCESS_MODE_DISABLED
 	#game.add_child(puzzles[index])
+	%PuzzleLabel.text = "Puzzle      " + str(current_level)
 	anim.play("flash_timer")
+	
 	
 
 func _input(event: InputEvent) -> void:
