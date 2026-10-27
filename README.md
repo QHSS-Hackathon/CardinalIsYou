@@ -37,3 +37,9 @@ Link to Game: https://spiralking.itch.io/cardinalisyou <br/>
   fulfill the goal of encouraging thinking like a programmer would, as few if any coding problems have one solution.
 # Contributions
 - Programming & Art : Logan Cheung
+
+<img width="245" height="158" alt="image" src="https://github.com/user-attachments/assets/1a5e88a3-02ab-4098-9412-db4f30cb6872" />
+<img width="242" height="157" alt="Screenshot 2026-10-27 154148" src="https://github.com/user-attachments/assets/c9290432-41a5-4252-a616-791c553d219c" />
+
+https://github.com/user-attachments/assets/b7204807-0c15-4d54-be17-e920cd7e6d38
+
