@@ -6,7 +6,7 @@ This project is completed. <br/>
 Link to Game: https://spiralking.itch.io/cardinalisyou <br/>
 
 # Design Goals
-- Allow players to intuitively grasp the game with pacing introduction of mechanics and ramping difficulty
+- Allow players to intuitively grasp the game without tutorial through pacing introduction of mechanics and ramping difficulty 
 - Create a series of 8 puzzles that is possible but challenging to complete with allocated 45 minutes for the game
 - Mimic the structure of logical puzzles found in puzzle game "Baba Is You"
 - Create puzzles that benefit from discussing with teammates
